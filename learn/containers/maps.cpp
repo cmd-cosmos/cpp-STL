@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <map>
+#include <unordered_map>
 
 int main()
 {
@@ -35,6 +36,41 @@ int main()
         std::cout << "key not found\n";
      }
      
+     // multi-maps ---> duplicate keys allowed
+     std::multimap<int,std::string> mmap;
+     mmap.emplace(1,"batman");
+     mmap.emplace(1,"batman");
+     mmap.emplace(1,"batman");
+     mmap.emplace(1,"batman");
+     mmap.emplace(1,"batman");
+    
+    for (auto mem: mmap)
+    {
+        std::cout << "Key: " << mem.first << '\n';
+        std::cout << "Value: " << mem.second << '\n';
+    }
+    // square brackets cannot be used anymore for insertion due to duplication
+    // deleting keys from a multimap also entails passing iterators to delete a single instance of the duplicate key
+    mmap.erase(mmap.find(1));
+    std::cout << mmap.count(1) << '\n'; // will print 4 as 1 instance of the (1) key deleted
+
+
+    // unordered map ---> important for DSA
+    // does not sort the data when inputed
+    std::unordered_map<int, std::string> unmap;
+    unmap.emplace(1,"batman");
+    unmap.emplace(7,"robin");
+    unmap.emplace(10,"alfred");
+    unmap.emplace(6,"joker");
+
+    for (auto unele: unmap)
+    {
+        std::cout << "Key: " << unele.first << '\n';
+        std::cout << "Value: " << unele.second << '\n';
+    }
+
+    //regular map ---> time complexity O(logn) for insert, erase, count as internally implemented as a self balancing tree.
+    // unordered map ---> time complexity O(1) amortized for the same operations.
 
     return 0;
 }
